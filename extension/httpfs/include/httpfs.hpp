@@ -35,7 +35,7 @@ struct HTTPParams {
 	static constexpr uint64_t DEFAULT_RETRY_WAIT_MS = 100;
 	static constexpr float DEFAULT_RETRY_BACKOFF = 4;
 	static constexpr bool DEFAULT_FORCE_DOWNLOAD = false;
-	static constexpr char DEFAULT_CA_CERT_PATH[] = "";
+	static constexpr char *DEFAULT_CA_CERT_PATH = "";
 	// TODO: Add default value here.
 
 	uint64_t timeout;
