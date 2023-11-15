@@ -35,12 +35,16 @@ struct HTTPParams {
 	static constexpr uint64_t DEFAULT_RETRY_WAIT_MS = 100;
 	static constexpr float DEFAULT_RETRY_BACKOFF = 4;
 	static constexpr bool DEFAULT_FORCE_DOWNLOAD = false;
+	static constexpr char DEFAULT_CA_CERT_PATH[] = "";
+	// TODO: Add default value here.
 
 	uint64_t timeout;
 	uint64_t retries;
 	uint64_t retry_wait_ms;
 	float retry_backoff;
 	bool force_download;
+	string ca_cert_path;
+	// TODO: Add variable here.
 
 	static HTTPParams ReadFrom(FileOpener *opener);
 };

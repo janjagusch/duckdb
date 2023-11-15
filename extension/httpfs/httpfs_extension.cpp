@@ -17,6 +17,8 @@ static void LoadInternal(DatabaseInstance &instance) {
 
 	// Global HTTP config
 	// Single timeout value is used for all 4 types of timeouts, we could split it into 4 if users need that
+	// TODO: Add config extension option here.
+	config.AddExtensionOption("http_ca_cert_path", "Path to trusted certificates (default '')", LogicalType::VARCHAR, Value(""));
 	config.AddExtensionOption("http_timeout", "HTTP timeout read/write/connection/retry (default 30000ms)",
 	                          LogicalType::UBIGINT, Value(30000));
 	config.AddExtensionOption("http_retries", "HTTP retries on I/O error (default 3)", LogicalType::UBIGINT, Value(3));

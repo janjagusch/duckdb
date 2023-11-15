@@ -34,6 +34,8 @@ HTTPParams HTTPParams::ReadFrom(FileOpener *opener) {
 	uint64_t retry_wait_ms = DEFAULT_RETRY_WAIT_MS;
 	float retry_backoff = DEFAULT_RETRY_BACKOFF;
 	bool force_download = DEFAULT_FORCE_DOWNLOAD;
+	// TODO: Add value for ca-cert here.
+	string ca_cert_path (DEFAULT_CA_CERT_PATH);
 	Value value;
 	if (FileOpener::TryGetCurrentSetting(opener, "http_timeout", value)) {
 		timeout = value.GetValue<uint64_t>();
@@ -50,8 +52,11 @@ HTTPParams HTTPParams::ReadFrom(FileOpener *opener) {
 	if (FileOpener::TryGetCurrentSetting(opener, "http_retry_backoff", value)) {
 		retry_backoff = value.GetValue<float>();
 	}
+	if (FileOpener::TryGetCurrentSetting(opener, "http_ca_cert_path", value)) {
+		ca_cert_path = value.GetValue<string>();
+	}
 
-	return {timeout, retries, retry_wait_ms, retry_backoff, force_download};
+	return {timeout, retries, retry_wait_ms, retry_backoff, force_download, ca_cert_path};
 }
 
 void HTTPFileSystem::ParseUrl(string &url, string &path_out, string &proto_host_port_out) {
@@ -187,6 +192,10 @@ unique_ptr<duckdb_httplib_openssl::Client> HTTPFileSystem::GetClient(const HTTPP
 	client->set_read_timeout(http_params.timeout);
 	client->set_connection_timeout(http_params.timeout);
 	client->set_decompress(false);
+	// TODO: If ca_bundle_path is set, use them.
+	if (http_params.ca_cert_path != HTTPParams::DEFAULT_CA_CERT_PATH) {
+		client->set_ca_cert_path(http_params.ca_cert_path.c_str());
+	}
 	return client;
 }
 
